@@ -16,7 +16,6 @@ function createProducts(dataProducts) {
     
     const item = document.querySelector("#items");
 
-console.log("bonjour!");
     for(let i = 0; i < dataProducts.length; i++) {
 
         // creer la balise 'a'
