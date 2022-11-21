@@ -3,20 +3,19 @@
 
 const productUrl = window.location.search;
 
-// console.log(productUrl);
-
 const urlSearch = new URLSearchParams(productUrl);
-
-// console.log(urlSearch);
 
 const productId = urlSearch.get("id");
 
-// console.log(productId);
+function getQteProduct() {
+    const qteProduct = parseInt(document.querySelector("#quantity").value);
+    return qteProduct;
+}
 
-const qteProduct = document.querySelector("#quantity");
-
-const itemColors = document.querySelector("#colors");
-// console.log(itemColors);
+function getItemColors() {
+    const itemColors = document.querySelector("#colors");
+    return itemColors;
+}
 
 
 async function getProducts() {
@@ -31,7 +30,7 @@ async function getProducts() {
 }
 
 function displayProducts(arrayProduct) {
-    console.log(arrayProduct);
+    // console.log(arrayProduct);
 
     // console.log(arrayProduct.imageUrl);
     const itemProduct = document.querySelector(".item__img");
@@ -68,10 +67,8 @@ function displayProducts(arrayProduct) {
     
     // ====== Description du produit =================
     const itemDesc = document.querySelector(".item__content__description");
-    // console.log(itemDesc);
     
     const desc = document.querySelector("#description");
-    // console.log(desc);
     
     // ajouter la description au produit
     desc.innerHTML = arrayProduct.description;
@@ -80,12 +77,10 @@ function displayProducts(arrayProduct) {
     // ================================================
     
     // ======= Parametres des couleurs ================
-    // console.log(itemColors);
-    
+    let itemColors = getItemColors();
     for(let i = 0; i < arrayProduct.colors.length; i++) {
         // creer une option de couleurs
         const option = document.createElement("option");
-        // console.log(option);
         // ajouter une valeur 
         option.setAttribute("value", arrayProduct.colors[i])
         // ajouter un texte
@@ -95,81 +90,57 @@ function displayProducts(arrayProduct) {
     }
 }
 
-// function monPanier() {
-//     // selectionne l'id du produit correspond
-//     const btnAjouter = document.querySelector("#addToCart");
-//     console.log(btnAjouter);
-
-//     btnAjouter.addEventListener("click", () => {
-//         let storage = JSON.parse(localStorage.getItem("productStorage"));
-
-//         const arrayStorage = {
-//             id: productId,
-//             color: itemColors.value,
-//             quantity: qteProduct.value
-//         }
-
-//         if(storage === null) {
-//             storage = [];
-//             storage.push(arrayStorage);
-//             localStorage.setItem("productStorage", JSON.stringify(storage));
-//         } else {
-            
-//         }
-//     })
-// }
-// monPanier();
-
-let arrayProducts = {
-    id: productId,
-    color: itemColors.value,
-    quantity: qteProduct.value
-};
-
-let basket = [];
-
 // Stocke les donnees dans le localStorage
-function setProduct(arrayProducts) {
-    localStorage.setItem("data", JSON.stringify(arrayProducts));
-}
-
-// Selectionner l'id correspond au produit
-function getProduct() {
-    const storage = localStorage.getItem("data");
-
-    if(storage === null) {
-        return [];
-    } else {
-        return JSON.parse(storage);
-    }
+function setProduct(basket) {
+    localStorage.setItem("data", JSON.stringify(basket));
 }
 
 // Ajouter les donnees dans le localStorage au click
-function addProduct(arrayProducts) {
+function addProduct() {
 
     const btnAddToCart = document.querySelector("#addToCart");
-
-    // console.log(btnAddToCart);
     
     btnAddToCart.addEventListener("click", () => {
-        const basket = getProduct();
+        
+        const itemColors = getItemColors();
+        const qteProduct = getQteProduct();
 
-        const foundProduct = basket.find(x => x.id === productId && x.color === itemColors.value);
+        const basket = {
+            id: productId,
+            color: itemColors.value,
+            quantity: qteProduct
+        };
+        
+        // const basket = getProduct();
 
-        if(foundProduct != undefined) {
-            foundProduct.quantity++;
+        const getData = JSON.parse(localStorage.getItem("data") || "[]");
+
+        const foundProduct = getData.find(x => x.id === productId);
+
+        const foundProductColor = getData.find(y => y.color === itemColors.value);
+
+
+        
+        if(basket.color === "" || basket.quantity === 0 || basket.quantity <= 0 || basket.quantity >= 101) {
+            return alert("Veuillez ajouter une couleur et une quantite (quantite max = 100)");
         } else {
-            arrayProducts.quantity = 1;
-            basket.push(arrayProducts);
+            if(foundProduct != undefined && foundProductColor != undefined) {
+                foundProductColor.quantity += basket.quantity;
+                setProduct(getData);
+            }
+            else {
+                getData.push(basket);
+                setProduct(getData);
+            }
         }
-        setProduct(basket);
+        alert("Votre produit a ete ajoute!!");
     })
 }
-addProduct(arrayProducts);
 
 async function asyncFunction() {
     const product = await getProducts();
     displayProducts(product);
+    addProduct();
 }
 asyncFunction();
 
