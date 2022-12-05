@@ -7,11 +7,6 @@ const urlSearch = new URLSearchParams(productUrl);
 
 const productId = urlSearch.get("id");
 
-function getQteProduct() {
-    const qteProduct = parseInt(document.querySelector("#quantity").value);
-    return qteProduct;
-}
-
 function getItemColors() {
     const itemColors = document.querySelector("#colors");
     return itemColors;
@@ -103,15 +98,18 @@ function addProduct() {
     btnAddToCart.addEventListener("click", () => {
         
         const itemColors = getItemColors();
-        const qteProduct = getQteProduct();
+
+        const qteProduct = document.querySelector("#quantity").value;
+        const regex = /^([0-9])*$/;
+        if(!qteProduct.match(regex)) {
+            return alert("Veuillez entrer un nombre entier (entre 1 et 100) !!")
+        }
 
         const basket = {
             id: productId,
             color: itemColors.value,
             quantity: qteProduct
         };
-        
-        // const basket = getProduct();
 
         const getData = JSON.parse(localStorage.getItem("data") || "[]");
 
