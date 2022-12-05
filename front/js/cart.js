@@ -229,14 +229,14 @@ function displayForm() {
             return;
         }
 
-        if(firstNameValidation() && lastNameValidation() && addressValidation() && cityValidation() && emailValidation()) 
+        
+        if(!firstNameValidation() || !lastNameValidation() || !addressValidation() || !cityValidation() || !emailValidation()) 
         {
+            return;
+        } else if(firstNameValidation() && lastNameValidation() && addressValidation() && cityValidation() && emailValidation()){
             const users = usersRequest();
             fetchOrder(users);
-        } else {
-            return;
         }
-
     })
 }
 
