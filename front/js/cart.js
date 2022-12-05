@@ -223,12 +223,6 @@ function displayForm() {
             alert("veuillez selectionner un produit a acheter!!");
             return;
         }
-
-        if(calcTotalQuantity() >= 101) {
-            alert("La quantite maximale de produits est de 100 !");
-            return;
-        }
-
         
         if(!firstNameValidation() || !lastNameValidation() || !addressValidation() || !cityValidation() || !emailValidation()) 
         {

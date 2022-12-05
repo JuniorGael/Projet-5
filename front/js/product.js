@@ -117,10 +117,14 @@ function addProduct() {
 
         const foundProductColor = getData.find(y => y.color === itemColors.value);
 
-
-        
-        if(basket.color === "" || basket.quantity === 0 || basket.quantity <= 0 || basket.quantity >= 101) {
-            return alert("Veuillez ajouter une couleur et une quantite (quantite max = 100)");
+        if(basket.color === "" || basket.quantity === 0 ) {
+            return alert("Veuillez selectionner une couleur et une quantite!!")
+        } else if(basket.color === ""){
+            return alert("Veuillez choisir une couleur!!")
+        } else if(basket.quantity === 0 || basket.quantity <= 0 ){
+            return alert("Veuillez selectionner le nombre d'article !! ")
+        } else if(basket.quantity > 100){
+            return alert("La quantite maximale de produits est de 100 !");
         } else {
             if(foundProduct != undefined && foundProductColor != undefined) {
                 foundProductColor.quantity += basket.quantity;
@@ -132,6 +136,7 @@ function addProduct() {
             }
         }
         alert("Votre produit a ete ajoute!!");
+        window.location.href = "./cart.html";
     })
 }
 
