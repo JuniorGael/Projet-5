@@ -31,9 +31,9 @@ function displayProductInCart(basket) {
         // console.log(articleCart);
         // ajouter une classe a la balise "article"
         articleCart.classList.add("cart__item");
-        // ajouter une data-id
+        // definir l'attribut "data-id" de l'article en utilisant la fonction setAttribute
         articleCart.setAttribute("data-id", basket[i]._id);
-        // ajouter une data-color
+        // // definir l'attribut "data-color" de l'article en utilisant la fonction setAttribute
         articleCart.setAttribute("data-color", basket[i].color);
         // =============================================================
 
@@ -231,6 +231,7 @@ function displayForm() {
             const users = usersRequest();
             fetchOrder(users);
         }
+        alert("Votre commande a ete validee!!");
     })
 }
 
@@ -346,7 +347,7 @@ function emailValidation() {
     return true;
 }
 
-
+// recuperer les ids depuis le localStorage
 function getIdsFromStorage() {
     const ids = [];
     for(let i = 0; i < getData.length; i++) {
@@ -354,7 +355,7 @@ function getIdsFromStorage() {
     }
     return ids;
 }
-
+// Utilise la methode POST pour envoyer notre requete des qu'on soumet le formulaire
 async function fetchOrder(users) {
 
     return await fetch(`http://localhost:3000/api/products/order`, {

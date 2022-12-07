@@ -1,10 +1,10 @@
 
-// Recuperer la liste des produits
 
 const productUrl = window.location.search;
 
 const urlSearch = new URLSearchParams(productUrl);
 
+// on retourne la premiere valeur associe au parametre de recherche donne (dont l'id)
 const productId = urlSearch.get("id");
 
 function getItemColors() {
@@ -12,7 +12,7 @@ function getItemColors() {
     return itemColors;
 }
 
-
+// Recuperer l'id des produits avec fetch depuis le serveur pour les afficher
 async function getProducts() {
 
     return await fetch(`http://localhost:3000/api/products/${productId}`) 
@@ -24,6 +24,7 @@ async function getProducts() {
     });
 }
 
+// Afficher les articles du DOM
 function displayProducts(arrayProduct) {
     // console.log(arrayProduct);
 
@@ -94,6 +95,7 @@ function setProduct(basket) {
 function addProduct() {
 
     const btnAddToCart = document.querySelector("#addToCart");
+
     
     btnAddToCart.addEventListener("click", () => {
         
@@ -115,14 +117,15 @@ function addProduct() {
 
         const foundProduct = getData.find(x => x.id === productId);
 
-        const foundProductColor = getData.find(y => y.color === itemColors.value);
+        const foundProductColor = getData.find(x => x.color === itemColors.value);
+        console.log(foundProductColor);
 
-        if(basket.color === "" || basket.quantity === 0 ) {
+        if(basket.color === "" || basket.quantity === 0) {
             return alert("Veuillez selectionner une couleur et une quantite!!")
         } else if(basket.color === ""){
             return alert("Veuillez choisir une couleur!!")
-        } else if(basket.quantity === 0 || basket.quantity <= 0 ){
-            return alert("Veuillez selectionner le nombre d'article !! ")
+        } else if(basket.quantity === 0 || basket.quantity <= 0){
+            return alert("Veuillez selectionner le nombre d'article !!")
         } else if(basket.quantity > 100){
             return alert("La quantite maximale de produits est de 100 !");
         } else {

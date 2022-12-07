@@ -1,7 +1,6 @@
 
-// Recuperer la liste des produits
+// Recuperer la liste des produits avec fetch depuis le serveur pour les afficher
 async function getProducts() {
-
     return await fetch('http://localhost:3000/api/products') 
     .then(function(response) {
         return response.json();
@@ -11,7 +10,7 @@ async function getProducts() {
     });
 }
 
-// Generer les produits
+// Generer les produits du DOM pour recuperer les elements de la page d'accueil
 function createProducts(dataProducts) {
     
     const item = document.querySelector("#items");
